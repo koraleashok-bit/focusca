@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA Study Companion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <span class="icon">📚</span>
+            <h2>CA Hub</h2>
+        </div>
+        <ul class="nav-links">
+            <li data-target="dashboard" class="active"><span class="icon">🏠</span> Dashboard</li>
+            <li data-target="focus"><span class="icon">⏱️</span> Focus Room</li>
+            <li data-target="planner"><span class="icon">📅</span> Study Planner</li>
+            <li data-target="tasks"><span class="icon">✅</span> Tasks</li>
+            <li data-target="rewards"><span class="icon">🎁</span> Rewards</li>
+            <li data-target="stats"><span class="icon">📊</span> Analytics</li>
+            <li data-target="refresh"><span class="icon">🌿</span> Refresh</li>
+            <li data-target="settings"><span class="icon">⚙️</span> Settings</li>
+        </ul>
+        <button id="themeToggle" class="btn-secondary">🌙 Dark Mode</button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="page active">
+            <header class="dash-header">
+                <div>
+                    <h1 id="greeting">Welcome back, Future CA!</h1>
+                    <p id="currentDate" class="subtitle"></p>
+                </div>
+                <button class="btn-primary" onclick="switchTab('focus')">Start Studying 🚀</button>
+            </header>
+
+            <div class="quote-card">
+                <p id="dailyQuote">"Success is the sum of small efforts, repeated day in and day out."</p>
+            </div>
+
+            <div class="grid-cards">
+                <div class="card stat-card">
+                    <h3>Today's Study Time</h3>
+                    <div class="progress-circle" id="studyProgressCircle">
+                        <span id="studyTimeText">0h 0m</span>
+                    </div>
+                    <p class="target-text">Target: <span id="dashTargetHours">6</span> hrs</p>
+                </div>
+                <div class="card stat-card">
+                    <h3>Tasks Completed</h3>
+                    <h2 id="dashTasksCompleted" class="big-number">0 / 0</h2>
+                    <p>Keep going!</p>
+                </div>
+                <div class="card stat-card">
+                    <h3>Current Streak</h3>
+                    <h2 class="big-number">🔥 <span id="dashStreak">0</span> Days</h2>
+                    <p>Consistency is key.</p>
+                </div>
+                <div class="card stat-card">
+                    <h3>Reward Points</h3>
+                    <h2 class="big-number">⭐ <span id="dashPoints">0</span></h2>
+                    <p>Earned through hard work.</p>
+                </div>
+            </div>
+            
+            <div class="card mt-2">
+                <h3>Daily Intention</h3>
+                <input type="text" id="dailyIntention" placeholder="What is your main focus today? (Auto-saves)" class="input-text w-100">
+            </div>
+        </section>
+
+        <!-- Focus Room Section -->
+        <section id="focus" class="page">
+            <div class="focus-container">
+                <h2 class="calm-text">One session at a time. One chapter at a time. Keep going.</h2>
+                
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                
+                <div class="timer-controls">
+                    <button class="btn-secondary" id="btnPomodoro">25 min</button>
+                    <button class="btn-secondary" id="btnLongPomodoro">50 min</button>
+                    <button class="btn-secondary" id="btnDeepWork">90 min</button>
+                    <button class="btn-secondary" id="btnShortBreak">5 min Break</button>
+                </div>
+                
+                <div class="timer-actions">
+                    <button class="btn-primary big-btn" id="startTimerBtn">Start</button>
+                    <button class="btn-secondary big-btn" id="pauseTimerBtn">Pause</button>
+                    <button class="btn-secondary big-btn" id="resetTimerBtn">Reset</button>
+                </div>
+
+                <div class="focus-toggles mt-2">
+                    <button class="btn-secondary" id="fullscreenBtn">📺 Fullscreen</button>
+                    <button class="btn-secondary" id="soundToggleBtn">🔊 Sound On</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CA Study Planner Section -->
+        <section id="planner" class="page">
+            <div class="section-header">
+                <h2>CA Study Planner</h2>
+                <button class="btn-primary" onclick="openModal('subjectModal')">+ Add Subject</button>
+            </div>
+            <div id="subjectsContainer" class="planner-grid">
+                <!-- Subjects populated via JS -->
+            </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section id="tasks" class="page">
+            <div class="section-header">
+                <h2>Daily Task Manager</h2>
+                <button class="btn-primary" onclick="openModal('taskModal')">+ Add Task</button>
+            </div>
+            
+            <div class="mit-section card mt-2" id="mitContainer" style="display: none;">
+                <h3>🌟 Most Important Task (MIT)</h3>
+                <div id="mitContent"></div>
+            </div>
+
+            <div class="tasks-container mt-2">
+                <div class="task-list card">
+                    <h3>Pending Tasks</h3>
+                    <ul id="pendingTasksList" class="clean-list"></ul>
+                </div>
+                <div class="task-list card">
+                    <h3>Completed Tasks</h3>
+                    <ul id="completedTasksList" class="clean-list"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Section -->
+        <section id="rewards" class="page">
+            <div class="section-header">
+                <h2>Rewards & Motivation</h2>
+                <div class="points-badge">⭐ <span id="rewardPointsDisplay">0</span> Points Available</div>
+            </div>
+            <p class="subtitle">Treat yourself! You've earned it.</p>
+            
+            <div class="card mt-2">
+                <h3>Achievements</h3>
+                <div class="badges-grid" id="badgesContainer">
+                    <!-- Badges populated via JS -->
+                </div>
+            </div>
+
+            <div class="section-header mt-2">
+                <h3>Reward Shop</h3>
+                <button class="btn-secondary" onclick="openModal('rewardModal')">+ Add Custom Reward</button>
+            </div>
+            <div class="rewards-grid" id="rewardsShopContainer">
+                <!-- Shop items via JS -->
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="stats" class="page">
+            <h2>Study Analytics</h2>
+            <div class="grid-cards mt-2">
+                <div class="card">
+                    <h3>Total Study Time</h3>
+                    <h2 class="big-number" id="statTotalTime">0h</h2>
+                </div>
+                <div class="card">
+                    <h3>Focus Sessions</h3>
+                    <h2 class="big-number" id="statSessions">0</h2>
+                </div>
+                <div class="card">
+                    <h3>Longest Streak</h3>
+                    <h2 class="big-number" id="statLongestStreak">0 Days</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- Refresh / Break Section -->
+        <section id="refresh" class="page">
+            <h2 class="text-center">Take a deep breath.</h2>
+            <div class="refresh-container">
+                <div class="breathing-circle">
+                    <span id="breatheText">Breathe In</span>
+                </div>
+                <div class="virtual-garden card mt-2 text-center">
+                    <h3>Your Virtual Garden</h3>
+                    <p>Grows as you complete focus sessions!</p>
+                    <div id="gardenDisplay" class="garden-emoji">🌱</div>
+                    <p id="gardenStatus">Seedling phase</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="page">
+            <h2>Personalization</h2>
+            <div class="card mt-2 form-container">
+                <label>Your Name</label>
+                <input type="text" id="setUserName" class="input-text">
+                
+                <label class="mt-2">CA Level</label>
+                <select id="setCaLevel" class="input-text">
+                    <option value="Foundation">Foundation</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Final">Final</option>
+                </select>
+
+                <label class="mt-2">Daily Study Target (Hours)</label>
+                <input type="number" id="setTargetHours" class="input-text" min="1" max="16">
+
+                <button class="btn-primary mt-2" onclick="saveSettings()">Save Settings</button>
+                
+                <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color);">
+                
+                <button class="btn-danger" onclick="resetData()">Danger: Reset All Data</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modals -->
+    <!-- Add Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content card">
+            <h3>Add New Task</h3>
+            <input type="text" id="newTaskName" class="input-text w-100 mt-2" placeholder="Task description...">
+            <label class="mt-2"><input type="checkbox" id="newTaskMIT"> Mark as Most Important Task (MIT)</label>
+            <div class="modal-actions mt-2">
+                <button class="btn-secondary" onclick="closeModal('taskModal')">Cancel</button>
+                <button class="btn-primary" onclick="addTask()">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div id="subjectModal" class="modal">
+        <div class="modal-content card">
+            <h3>Add Subject</h3>
+            <input type="text" id="newSubjectName" class="input-text w-100 mt-2" placeholder="e.g., Financial Reporting">
+            <div class="modal-actions mt-2">
+                <button class="btn-secondary" onclick="closeModal('subjectModal')">Cancel</button>
+                <button class="btn-primary" onclick="addSubject()">Add Subject</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Chapter Modal -->
+    <div id="chapterModal" class="modal">
+        <div class="modal-content card">
+            <h3>Add Chapter / Topic</h3>
+            <input type="hidden" id="chapterSubjectId">
+            <input type="text" id="newChapterName" class="input-text w-100 mt-2" placeholder="Chapter name...">
+            <select id="newChapterStatus" class="input-text w-100 mt-2">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Revision">Revision</option>
+                <option value="Mock Test">Mock Test</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <select id="newChapterPriority" class="input-text w-100 mt-2">
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+            </select>
+            <div class="modal-actions mt-2">
+                <button class="btn-secondary" onclick="closeModal('chapterModal')">Cancel</button>
+                <button class="btn-primary" onclick="addChapter()">Add Chapter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Reward Modal -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content card">
+            <h3>Add Custom Reward</h3>
+            <input type="text" id="newRewardName" class="input-text w-100 mt-2" placeholder="e.g., Watch 1 episode of show">
+            <input type="number" id="newRewardCost" class="input-text w-100 mt-2" placeholder="Cost in Points (e.g., 50)">
+            <div class="modal-actions mt-2">
+                <button class="btn-secondary" onclick="closeModal('rewardModal')">Cancel</button>
+                <button class="btn-primary" onclick="addReward()">Add Reward</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
