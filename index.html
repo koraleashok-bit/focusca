@@ -2,29 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CA Study Companion</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#f4f6fa" id="metaThemeColor">
 </head>
 <body>
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation / Bottom Mobile Nav -->
     <nav class="sidebar">
         <div class="logo">
             <span class="icon">📚</span>
             <h2>CA Hub</h2>
         </div>
         <ul class="nav-links">
-            <li data-target="dashboard" class="active"><span class="icon">🏠</span> Dashboard</li>
-            <li data-target="focus"><span class="icon">⏱️</span> Focus Room</li>
-            <li data-target="planner"><span class="icon">📅</span> Study Planner</li>
-            <li data-target="tasks"><span class="icon">✅</span> Tasks</li>
-            <li data-target="rewards"><span class="icon">🎁</span> Rewards</li>
-            <li data-target="stats"><span class="icon">📊</span> Analytics</li>
-            <li data-target="refresh"><span class="icon">🌿</span> Refresh</li>
-            <li data-target="settings"><span class="icon">⚙️</span> Settings</li>
+            <li data-target="dashboard" class="active"><span class="icon">🏠</span> <span class="nav-text">Dashboard</span></li>
+            <li data-target="focus"><span class="icon">⏱️</span> <span class="nav-text">Focus Room</span></li>
+            <li data-target="planner"><span class="icon">📅</span> <span class="nav-text">Planner</span></li>
+            <li data-target="tasks"><span class="icon">✅</span> <span class="nav-text">Tasks</span></li>
+            <li data-target="rewards"><span class="icon">🎨</span> <span class="nav-text">Rewards & Design</span></li>
+            <li data-target="stats"><span class="icon">📊</span> <span class="nav-text">Analytics</span></li>
+            <li data-target="refresh"><span class="icon">🌿</span> <span class="nav-text">Refresh</span></li>
+            <li data-target="settings"><span class="icon">⚙️</span> <span class="nav-text">Settings</span></li>
         </ul>
-        <button id="themeToggle" class="btn-secondary">🌙 Dark Mode</button>
+        <button id="themeToggle" class="btn-secondary" aria-label="Toggle Default Theme">🌙 Default Dark</button>
     </nav>
+
+    <!-- Celebration Overlay (New Addition) -->
+    <div id="celebrationOverlay" class="celebration-overlay">
+        <div class="celebration-content">
+            <span class="celebration-icon">🎉</span>
+            <h2>Theme Unlocked!</h2>
+            <p>Your study space just got an upgrade.</p>
+        </div>
+    </div>
 
     <!-- Main Content Area -->
     <main class="main-content">
@@ -32,7 +42,7 @@
         <!-- Dashboard Section -->
         <section id="dashboard" class="page active">
             <header class="dash-header">
-                <div>
+                <div class="header-text-group">
                     <h1 id="greeting">Welcome back, Future CA!</h1>
                     <p id="currentDate" class="subtitle"></p>
                 </div>
@@ -77,7 +87,9 @@
         <!-- Focus Room Section -->
         <section id="focus" class="page">
             <div class="focus-container">
-                <h2 class="calm-text">One session at a time. One chapter at a time. Keep going.</h2>
+                <div class="focus-quote-wrapper">
+                    <h2 id="focusMotivationalQuote" class="calm-text">One session at a time. One chapter at a time. Keep going.</h2>
+                </div>
                 
                 <div class="timer-display" id="timerDisplay">25:00</div>
                 
@@ -129,20 +141,38 @@
                     <h3>Pending Tasks</h3>
                     <ul id="pendingTasksList" class="clean-list"></ul>
                 </div>
-                <div class="task-list card">
+                <div class="task-list card mt-2">
                     <h3>Completed Tasks</h3>
                     <ul id="completedTasksList" class="clean-list"></ul>
                 </div>
             </div>
         </section>
 
-        <!-- Rewards Section -->
+        <!-- Rewards & Design Studio Section -->
         <section id="rewards" class="page">
             <div class="section-header">
-                <h2>Rewards & Motivation</h2>
-                <div class="points-badge">⭐ <span id="rewardPointsDisplay">0</span> Points Available</div>
+                <h2>Rewards & Design Studio</h2>
+                <div class="points-badge">⭐ <span id="rewardPointsDisplay">0</span> Points</div>
             </div>
-            <p class="subtitle">Treat yourself! You've earned it.</p>
+            <p class="subtitle">Treat yourself and customise your study environment!</p>
+
+            <!-- DESIGN STUDIO: My Collection (New Addition) -->
+            <div class="card mt-2">
+                <h3>My Design Collection</h3>
+                <p class="subtitle" style="font-size: 0.85rem; margin-bottom: 1rem;">Freely switch between your unlocked themes.</p>
+                <div class="rewards-grid" id="myCollectionContainer">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- DESIGN STUDIO: Theme Shop (New Addition) -->
+            <div class="card mt-2">
+                <h3>Design Studio – Premium Themes</h3>
+                <p class="subtitle" style="font-size: 0.85rem; margin-bottom: 1rem;">Spend points to unlock beautiful new aesthetics.</p>
+                <div class="rewards-grid" id="themeShopContainer">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
             
             <div class="card mt-2">
                 <h3>Achievements</h3>
@@ -152,8 +182,8 @@
             </div>
 
             <div class="section-header mt-2">
-                <h3>Reward Shop</h3>
-                <button class="btn-secondary" onclick="openModal('rewardModal')">+ Add Custom Reward</button>
+                <h3>Custom Activities Shop</h3>
+                <button class="btn-secondary" onclick="openModal('rewardModal')">+ Add Custom</button>
             </div>
             <div class="rewards-grid" id="rewardsShopContainer">
                 <!-- Shop items via JS -->
@@ -164,15 +194,15 @@
         <section id="stats" class="page">
             <h2>Study Analytics</h2>
             <div class="grid-cards mt-2">
-                <div class="card">
+                <div class="card stat-card">
                     <h3>Total Study Time</h3>
                     <h2 class="big-number" id="statTotalTime">0h</h2>
                 </div>
-                <div class="card">
+                <div class="card stat-card">
                     <h3>Focus Sessions</h3>
                     <h2 class="big-number" id="statSessions">0</h2>
                 </div>
-                <div class="card">
+                <div class="card stat-card">
                     <h3>Longest Streak</h3>
                     <h2 class="big-number" id="statLongestStreak">0 Days</h2>
                 </div>
@@ -188,7 +218,7 @@
                 </div>
                 <div class="virtual-garden card mt-2 text-center">
                     <h3>Your Virtual Garden</h3>
-                    <p>Grows as you complete focus sessions!</p>
+                    <p class="subtitle">Grows as you complete focus sessions!</p>
                     <div id="gardenDisplay" class="garden-emoji">🌱</div>
                     <p id="gardenStatus">Seedling phase</p>
                 </div>
@@ -199,24 +229,25 @@
         <section id="settings" class="page">
             <h2>Personalization</h2>
             <div class="card mt-2 form-container">
-                <label>Your Name</label>
-                <input type="text" id="setUserName" class="input-text">
+                <label for="setUserName">Your Name</label>
+                <input type="text" id="setUserName" class="input-text w-100">
                 
-                <label class="mt-2">CA Level</label>
-                <select id="setCaLevel" class="input-text">
+                <label for="setCaLevel" class="mt-2">CA Level</label>
+                <select id="setCaLevel" class="input-text w-100">
                     <option value="Foundation">Foundation</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Final">Final</option>
                 </select>
 
-                <label class="mt-2">Daily Study Target (Hours)</label>
-                <input type="number" id="setTargetHours" class="input-text" min="1" max="16">
+                <label for="setTargetHours" class="mt-2">Daily Study Target (Hours)</label>
+                <input type="number" id="setTargetHours" class="input-text w-100" min="1" max="16">
 
-                <button class="btn-primary mt-2" onclick="saveSettings()">Save Settings</button>
+                <button class="btn-primary mt-2 w-100" onclick="saveSettings()">Save Settings</button>
+                <button class="btn-secondary mt-2 w-100 mobile-only" id="mobileThemeToggle">Toggle Default Theme</button>
                 
                 <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color);">
                 
-                <button class="btn-danger" onclick="resetData()">Danger: Reset All Data</button>
+                <button class="btn-danger w-100" onclick="resetData()">Danger: Reset All Data</button>
             </div>
         </section>
 
@@ -224,11 +255,11 @@
 
     <!-- Modals -->
     <!-- Add Task Modal -->
-    <div id="taskModal" class="modal">
+    <div id="taskModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content card">
             <h3>Add New Task</h3>
             <input type="text" id="newTaskName" class="input-text w-100 mt-2" placeholder="Task description...">
-            <label class="mt-2"><input type="checkbox" id="newTaskMIT"> Mark as Most Important Task (MIT)</label>
+            <label class="mt-2 checkbox-label"><input type="checkbox" id="newTaskMIT" class="task-checkbox"> Mark as Most Important Task (MIT)</label>
             <div class="modal-actions mt-2">
                 <button class="btn-secondary" onclick="closeModal('taskModal')">Cancel</button>
                 <button class="btn-primary" onclick="addTask()">Add Task</button>
@@ -237,7 +268,7 @@
     </div>
 
     <!-- Add Subject Modal -->
-    <div id="subjectModal" class="modal">
+    <div id="subjectModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content card">
             <h3>Add Subject</h3>
             <input type="text" id="newSubjectName" class="input-text w-100 mt-2" placeholder="e.g., Financial Reporting">
@@ -249,7 +280,7 @@
     </div>
 
     <!-- Add Chapter Modal -->
-    <div id="chapterModal" class="modal">
+    <div id="chapterModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content card">
             <h3>Add Chapter / Topic</h3>
             <input type="hidden" id="chapterSubjectId">
@@ -273,8 +304,8 @@
         </div>
     </div>
 
-    <!-- Add Reward Modal -->
-    <div id="rewardModal" class="modal">
+    <!-- Add Custom Reward Modal -->
+    <div id="rewardModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content card">
             <h3>Add Custom Reward</h3>
             <input type="text" id="newRewardName" class="input-text w-100 mt-2" placeholder="e.g., Watch 1 episode of show">
@@ -282,6 +313,26 @@
             <div class="modal-actions mt-2">
                 <button class="btn-secondary" onclick="closeModal('rewardModal')">Cancel</button>
                 <button class="btn-primary" onclick="addReward()">Add Reward</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Preview Modal (New Addition) -->
+    <div id="themePreviewModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content card text-center">
+            <h2 id="previewThemeTitle" style="margin-bottom: 0.5rem;">Theme Name</h2>
+            <p id="previewThemeDesc" class="subtitle" style="margin-bottom: 1.5rem;">Description goes here.</p>
+            
+            <div class="theme-thumbnail" id="previewThemeThumb" style="height: 120px; border-radius: 12px; margin-bottom: 1.5rem;"></div>
+            
+            <div id="previewPriceContainer" style="margin-bottom: 1rem;">
+                <span class="points-badge" id="previewThemePrice">Price: 300 ⭐</span>
+            </div>
+            
+            <div class="modal-actions" style="justify-content: center;">
+                <button class="btn-secondary" onclick="cancelThemePreview()">Cancel Preview</button>
+                <button class="btn-primary" id="purchaseThemeBtn" onclick="purchaseTheme()">Purchase & Apply</button>
+                <button class="btn-primary" id="applyThemeBtn" onclick="applyThemeFromPreview()">Apply Theme</button>
             </div>
         </div>
     </div>
